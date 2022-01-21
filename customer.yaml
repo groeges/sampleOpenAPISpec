@@ -1,0 +1,163 @@
+openapi: 3.0.1
+info:
+  title: CustomerAccountManagementService
+  version: "4"
+  x-ibm-name: customeraccountmanagementservice
+servers:
+  - url: https://cpd-tap-project.apps.boomkin.cp.fyre.ibm.com/baw-instance1/automationservices/rest/CAMM/CustomerAccountManagementService
+security:
+  - basic_auth: []
+paths:
+  "/retrieveAnnualRevenue":
+    post:
+      operationId: retrieveAnnualRevenue
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/retrieveAnnualRevenue_input"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/retrieveAnnualRevenue_output"
+        "400":
+          description: The request contains invalid parameters, or they are missing.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+        "404":
+          description: The requested resource does not exist.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+        "409":
+          description:
+            The request cannot be processed because of one or more conflicts
+            in the request.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+  "/retrieveCustomerDetails":
+    post:
+      operationId: retrieveCustomerDetails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/retrieveCustomerDetails_input"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/retrieveCustomerDetails_output"
+        "400":
+          description: The request contains invalid parameters, or they are missing.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+        "404":
+          description: The requested resource does not exist.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+        "409":
+          description:
+            The request cannot be processed because of one or more conflicts
+            in the request.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        name:
+          type: string
+        emailAddress:
+          type: string
+    CustomerAccountManagementServiceException:
+      title: Exception
+      required:
+        - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: Exception code or Message ID of the exception.
+        message:
+          type: string
+          description: Message text of the exception.
+        message_parameters:
+          type: array
+          description: Message text parameters of the exception.
+          items:
+            type: string
+            description:
+              An array of parameter strings that were inserted into the
+              error message.
+        cause:
+          "$ref": "#/components/schemas/CustomerAccountManagementServiceException"
+      description: Exception object describing error details.
+    retrieveAnnualRevenue_input:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+      description: Input schema for the operation retrieveAnnualRevenue
+      x-dba-parameter-wrapper: true
+    retrieveAnnualRevenue_output:
+      type: object
+      properties:
+        annualRevenue:
+          type: string
+      description: Response schema of operation retrieveAnnualRevenue
+      x-dba-parameter-wrapper: true
+    retrieveCustomerDetails_input:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+      description: Input schema for the operation retrieveCustomerDetails
+      x-dba-parameter-wrapper: true
+    retrieveCustomerDetails_output:
+      type: object
+      properties:
+        customer:
+          "$ref": "#/components/schemas/Customer"
+      description: Response schema of operation retrieveCustomerDetails
+      x-dba-parameter-wrapper: true
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
+x-ibm-configuration:
+  platformnamespace: cammworkflow
+  enforced: false
+  categories:
+    - default
